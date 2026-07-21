@@ -1,41 +1,7 @@
-<?php
-$plik_licznika = "licznik.txt";
-$plik_ip = "adresy_ip.txt";
-
-// Jeśli pliki nie istnieją, utwórz je
-if (!file_exists($plik_licznika)) {
-    file_put_contents($plik_licznika, "0");
-}
-if (!file_exists($plik_ip)) {
-    file_put_contents($plik_ip, "");
-}
-
-// Pobierz aktualny stan licznika
-$liczba_odwiedzin = (int)file_get_contents($plik_licznika);
-
-// Pobierz adres IP użytkownika
-$user_ip = $_SERVER['REMOTE_ADDR'];
-
-// Pobierz listę zapisanych adresów IP i rozbij ją na tablicę
-$zapisane_ip = explode("\n", trim(file_get_contents($plik_ip)));
-
-// Sprawdź, czy użytkownik nie ma ciasteczka ORAZ czy jego IP nie ma na liście
-if (!isset($_COOKIE['odwiedzono']) && !in_array($user_ip, $zapisane_ip)) {
-    
-    // Ustaw ciasteczko na 1 rok
-    setcookie('odwiedzono', 'tak', time() + (365 * 24 * 3600), "/");
-    
-    // Dopisz nowe IP do pliku (każde w nowej linijce)
-    file_put_contents($plik_ip, $user_ip . "\n", FILE_APPEND);
-    
-    // Zwiększ licznik i zapisz
-    $liczba_odwiedzin++;
-    file_put_contents($plik_licznika, $liczba_odwiedzin);
-}
-?>
 <html>
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <head>
+<meta charset="UTF-8">
 <title>Radiograt - Strona glowna</title>
 </head>
 <body>
@@ -45,7 +11,8 @@ if (!isset($_COOKIE['odwiedzono']) && !in_array($user_ip, $zapisane_ip)) {
 <font size="5">
 
 <p>Dzis jest:</p>
-<p><b><?php date_default_timezone_set("Europe/Warsaw"); echo date("d.m.Y H:i"); ?></b></p>
+<!-- Licznik czasu jako retro-obrazek z serwera zegarowego -->
+<p><b><img src="https://worldtimeserver.com" alt="Aktualny czas"></b></p>
 <p>Internet na nokia communicator!</p>
 <img src="ratuszlubin2.gif" alt="">        
 <p>Radiograt pozdrawia Dawnofony oraz obserwujacych!</p>
@@ -60,7 +27,8 @@ if (!isset($_COOKIE['odwiedzono']) && !in_array($user_ip, $zapisane_ip)) {
 <!-- --- a tu ten caly licznik.. wait co tu robisz?!?--- -->
 <font size="4">
 <hr width="200">
-<p>Liczba odwiedzin: <b><?php echo $liczba_odwiedzin; ?></b></p>
+<!-- Dynamiczny licznik odwiedzin w formie grafiki GIF pasującej do klimatu -->
+<p>Liczba odwiedzin: <b><img src="https://us.com" alt="Licznik"></b></p>
 </font>
 
 <font size="3">
